@@ -1,0 +1,25 @@
+{
+  "name": "realtime-tweet-sentiment",
+  "version": "1.0.0",
+  "description": "Display realtime tweet sentiment containing a given keyword",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "tweeter",
+    "nlp",
+    "sentiment"
+  ],
+  "author": "christophe bellec",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "express": "^4.14.1",
+    "socket.io": "^1.7.2",
+    "twitter": "^1.7.0"
+  },
+  "repository" : {
+	"type" : "git",
+	"url" : "https://github.com/christophe77/realtime-tweeter-nlp-sentiment.git"
+  }
+}
