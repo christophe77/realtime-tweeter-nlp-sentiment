@@ -53,7 +53,7 @@ twitter.stream('statuses/filter', { track: keywordTowatch },
     }
 );
 function tweetAnalyze(tweet, socketId){
-	if(!accountsToSkip(tweet.user.screen_name) && !tweet.hasOwnProperty('retweeted_status')){		
+	if(!isInAccountsToSkip(tweet.user.screen_name) && !tweet.hasOwnProperty('retweeted_status')){		
 		var tweet_link = 'https://twitter.com/' + tweet.user.screen_name + '/status/' + tweet.id_str;
 		var userPicture = tweet.user.profile_image_url_https;
 		if(tweet.lang == "fr"){
@@ -93,8 +93,8 @@ function merge(obj1,obj2){
     for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
     return obj3;
 }
-function isInAfOfficialAccounts(account) {
-    return afOfficialAccounts.indexOf(account) > -1;
+function isInAccountsToSkip(account) {
+    return accountsToSkip.indexOf(account) > -1;
 };
 function colorify(sentimentScore) {
 	if (sentimentScore <= -4)
@@ -107,7 +107,14 @@ function colorify(sentimentScore) {
 		return "success";
 };
 var cleanTweetText = function (tweetText) {
-    return tweetText.replace(/[-'`~!@#$%^&*()_|+=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+	// remove 1 letter word for better negate test
+	var cleanTweet = "";
+	tweetText.split(" ").map(function(x){  
+		if (x.length > 1)
+			cleanTweet = cleanTweet + x + " "; 
+	}); 
+	// remove special chars
+    return cleanTweet.replace(/[-'`~!@#$%^&*()_|+=?;:'",.<>\{\}\[\]\\\/]/gi, '');
 };
 function getAfinnScore(dict, negate, tweetText) {
     return tweetText.toLowerCase().split(' ').map(cleanTweetText).reduce(function (acc, word) {		
