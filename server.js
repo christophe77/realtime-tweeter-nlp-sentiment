@@ -69,7 +69,7 @@ function tweetAnalyze(tweet, socketId){
 			var negate = new RegExp(/^(nicht|kein|nein)$/);
 		}			
 		if(dict && negate){			
-			var sentimentScore = getAfinnScore(dict, negate, tweet.text);
+			var sentimentScore = getAfinnScore(dict, negate, removeOneLetterWords(tweet.text));
 			var tweetObject = {
 				link: tweet_link,
 				piclink: userPicture,
@@ -107,14 +107,17 @@ function colorify(sentimentScore) {
 		return "success";
 };
 var cleanTweetText = function (tweetText) {
+	return tweetText.replace(/[-'`~!@#$%^&*()_|+=?;:'",.<>\{\}\[\]\\\/]/gi, ' ');
+};
+function removeOneLetterWords(tweetText) {
 	// remove 1 letter word for better negate test
-	var cleanTweet = "";
+	var cleanedTweet = "";
 	tweetText.split(" ").map(function(x){  
 		if (x.length > 1)
-			cleanTweet = cleanTweet + x + " "; 
+			cleanedTweet = cleanedTweet + x + " "; 
 	}); 
-	// remove special chars
-    return cleanTweet.replace(/[-'`~!@#$%^&*()_|+=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+	console.log(cleanedTweet)
+    return cleanedTweet;
 };
 function getAfinnScore(dict, negate, tweetText) {
     return tweetText.toLowerCase().split(' ').map(cleanTweetText).reduce(function (acc, word) {		
